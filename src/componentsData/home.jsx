@@ -6,6 +6,21 @@ import { useNavigate } from 'react-router-dom'
 const  Home=()=> {
 const [user, setUser] = useState([])
 const [search, setSearch] = useState('')
+const [sortOrder,setsortOrder]=useState("A-Z")
+const handleSortorderChange=(e)=>{
+  const order=e.target.value
+  console.log(order);
+  
+  const sortedUsers=[...user].sort((a,b)=>{
+if(order==="A-Z"){
+  return a.name.localeCompare(b.name)
+}else{
+  return b.name.localeCompare(a.name)
+}
+  })
+  setUser(sortedUsers)
+  setsortOrder(order)
+}
 const [loading,setLoading]=useState(false)
 const {setUserDetails}=userUser()
 const navigate=useNavigate()
@@ -48,9 +63,14 @@ const filteredUser=user.filter((user)=>user.name.toLowerCase().includes(search.t
    <img src="https://i.ibb.co/HB94PKs/Screenshot-2025-01-19-114522.png" className="h-16 w-16 rounded-md"/>
     <ModeToggle />
    </div>
-   <div className='px-14 pb-5  max-sm:px-6'>
+   <div className='px-14 pb-5  max-sm:px-6 flex justify-between max-sm:flex-col max-sm:gap-4'>
 
 <input type='search' placeholder='Search User' className='p-2 px-4 rounded-lg font-semibold bg-white-700 shadow w-64 text-black hover:bg-gray-200 outline-none max-sm:p-4 max-sm:w-full ' value={search} onChange={handleSearchUser}/>
+<select className='p-2 px-4 rounded-lg font-semibold bg-white-700 shadow w-64 text-gray-400  hover:bg-gray-200 outline-none max-sm:p-4 max-sm:w-full ' value={sortOrder} onChange={handleSortorderChange}>
+<option value="A-Z">Sort User</option>
+  <option value="A-Z">Sort A-Z</option>
+  <option value="Z-A">Sort Z-A</option>
+</select>
    </div>
 
    <div className="flex flex-wrap justify-center items-center gap-4 max-sm:m-6">
